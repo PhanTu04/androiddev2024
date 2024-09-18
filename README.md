@@ -10,7 +10,8 @@ Students are expected to:
 Student Info
 =======================
 
-* Name: Phan Việt Tú
-* ID: 22BI13443
-* Group ID: 4
-* Project Name: NASA client
+* Name: *Phan Việt Tú*
+* ID: *22BI13443*
+* Group ID: *4*
+* Project Name: *NASA client*
+
