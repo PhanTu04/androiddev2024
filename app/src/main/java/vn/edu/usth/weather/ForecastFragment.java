@@ -1,74 +1,123 @@
 package vn.edu.usth.weather;
 
+import static vn.edu.usth.weather.R.*;
+
+import android.annotation.SuppressLint;
+import android.app.ActivityManager;
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
-import androidx.fragment.app.Fragment;
+import java.util.ResourceBundle;
 
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link ForecastFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
 public class ForecastFragment extends Fragment {
 
-    public static ForecastFragment newInstance() {
-        return new ForecastFragment();
+    public ForecastFragment() {
+        // Required empty public constructor
+    }
+    public static ForecastFragment newInstance(String param1, String param2) {
+        ForecastFragment fragment = new ForecastFragment();
+        return fragment;
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Create a parent LinearLayout to hold everything
-        LinearLayout parentLayout = new LinearLayout(getActivity());
-        parentLayout.setOrientation(LinearLayout.VERTICAL);
-        parentLayout.setGravity(Gravity.CENTER);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-        // Create the blue forecast area (child LinearLayout)
-        LinearLayout forecastArea = new LinearLayout(getActivity());
-        forecastArea.setOrientation(LinearLayout.VERTICAL);
-        forecastArea.setGravity(Gravity.CENTER);
-        forecastArea.setBackgroundColor(Color.parseColor("#FF0000FF")); // Set the blue color (#FF0000FF)
-
-        // Set layout parameters for the forecast area
-        LinearLayout.LayoutParams forecastParams = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-        );
-        forecastParams.setMargins(16, 16, 16, 16); // Optional margin around the blue area
-        forecastArea.setLayoutParams(forecastParams);
-
-        // Add forecast for each day inside the blue area
-        addForecast(forecastArea, "Thursday", R.drawable.cloudy);
-        addForecast(forecastArea, "Friday", R.drawable.smallrain);
-        addForecast(forecastArea, "Saturday", R.drawable.storm);
-        addForecast(forecastArea, "Sunday", R.drawable.sunny);
-
-        // Add the blue forecast area to the parent layout
-        parentLayout.addView(forecastArea);
-
-        // Return the parent layout
-        return parentLayout;
     }
 
-    private void addForecast(LinearLayout layout, String day, int weatherIconRes) {
-        // Create a TextView for the day
-        TextView dayTextView = new TextView(getActivity());
-        dayTextView.setText(day);
-        dayTextView.setTextSize(24);
-        dayTextView.setGravity(Gravity.CENTER);
-        layout.addView(dayTextView);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        ScrollView scrollView = new ScrollView(getActivity());
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+        params.setMargins(30, 30, 30, 30);
+        // Create a vertical LinearLayout
+        LinearLayout view = new LinearLayout(getActivity());
+        view.setOrientation(LinearLayout.VERTICAL);
+        view.setBackgroundColor(Color.parseColor("#FFE5E5"));
+        view.setLayoutParams(params);
 
-        // Create an ImageView for the weather icon
-        ImageView weatherIcon = new ImageView(getActivity());
-        weatherIcon.setImageResource(weatherIconRes);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-        );
-        layoutParams.gravity = Gravity.CENTER;
-        weatherIcon.setLayoutParams(layoutParams);
-        layout.addView(weatherIcon);
+        //Pratical4
+        /*// Add image
+        ImageView img = new ImageView(getActivity());
+        img.setImageResource(drawable.sunny);
+        img.setPivotY(Gravity.CENTER);
+        img.setLayoutParams(new LinearLayout.LayoutParams(144, 144));
+
+        // Add text
+        TextView text = new TextView(getActivity());
+        text.setText("Thursday");
+
+        // Add text and image to linearlayout
+        view.addView(text);
+        view.addView(img);
+        //END OF PRATICAL 4*/
+
+        // Initiate arrays
+        Resources res = getResources();
+        String[] days = res.getStringArray(array.DaysOfWeek);
+        String[] weather = res.getStringArray(array.Weather);
+        String[] degree = res.getStringArray(array.degree);
+        int[] img = {drawable.sun_and_cloud, drawable.rainny3, R.drawable.rainny2, drawable.rainny, drawable.cloudy, drawable.sunny2, drawable.lightning2};
+
+        // Create loop for 7 days of week
+        for(int i = 0; i < 7; i++){
+            LinearLayout dailyForecast = new LinearLayout(getActivity());
+            dailyForecast.setOrientation(LinearLayout.HORIZONTAL);
+            dailyForecast.setLayoutParams(params);
+            dailyForecast.setLayoutParams(new LinearLayout.LayoutParams(1500, LinearLayout.LayoutParams.WRAP_CONTENT));
+
+            // Add Days of week
+            TextView date = new TextView(getActivity());
+            date.setTextSize(18);
+            date.setTypeface(null, Typeface.BOLD);
+            date.setPadding(40,100,15,15);
+            date.setGravity(Gravity.CENTER);
+            date.setText(days[i]);
+
+            // Add image
+            ImageView icon = new ImageView(getActivity());
+            icon.setImageResource(img[i]);
+            icon.setLayoutParams(new LinearLayout.LayoutParams(255, 255));
+
+
+            // Add weather and degrees
+            TextView info = new TextView(getActivity());
+            info.setTextSize(18);
+            info.setText(weather[i] +"\n" + degree[i]);
+            date.setGravity(Gravity.CENTER);
+            info.setPadding(40,0,15,15);
+
+            // Add everything back to horizontal layout
+            dailyForecast.addView(date);
+            dailyForecast.addView(icon);
+            dailyForecast.addView(info);
+
+            // Add horizontal layout to vertical one
+            view.addView(dailyForecast);
+
+        }
+        // Return view
+        scrollView.addView(view);
+        return scrollView;
     }
 }

@@ -1,59 +1,86 @@
 package vn.edu.usth.weather;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
-import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.material.tabs.TabLayout;
+
+class HomeFragmentPagerAdapter extends FragmentPagerAdapter {
+    private final int PAGE_COUNT = 3;
+    private String titles[] = new String[] { "Hanoi", "Paris", "Toulouse" };
+    private Context context;
+    public HomeFragmentPagerAdapter(FragmentManager fm) {
+        super(fm);
+    }
+    @Override
+    public int getCount() {
+        return PAGE_COUNT; // number of pages for a ViewPager
+    }
+    @Override
+    public Fragment getItem(int page) {
+// returns an instance of Fragment corresponding to the specified page
+        switch (page) {
+            case 0: return WeatherAndForecastFragment.newInstance("HaNoi","VietNam");
+            case 1: return WeatherAndForecastFragment.newInstance("Toulouse","VietNam");
+            case 2: return WeatherAndForecastFragment.newInstance("Paris","VietNam");
+        }
+        return new EmptyFragment(); // failsafe
+    }
+    @Override
+    public CharSequence getPageTitle(int page) {
+// returns a tab title corresponding to the specified page
+        return titles[page];
+    }
+}
 
 public class WeatherActivity extends AppCompatActivity {
-
+    private static final String TAG = "WeatherActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i(TAG, "onCreate(Bundle) called");
         setContentView(R.layout.activity_weather);
 
-        // Ghi log để theo dõi quá trình khởi tạo Activity
-        Log.i("WeatherActivity", "onCreate called");
-
-        // Thêm ForecastFragment vào Activity
-        ForecastFragment forecastFragment = ForecastFragment.newInstance();
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.container, forecastFragment)
-                .commit();
+        PagerAdapter adapter = new HomeFragmentPagerAdapter(
+                getSupportFragmentManager());
+        ViewPager pager = (ViewPager) findViewById(R.id.pager);
+        pager.setOffscreenPageLimit(3);
+        pager.setAdapter(adapter);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab);
+        tabLayout.setupWithViewPager(pager);
     }
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
-        // Ghi log khi Activity chuyển sang trạng thái Started
-        Log.i("WeatherActivity", "onStart called");
+        Log.i(TAG, "onStart() called");
     }
-
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
-        // Ghi log khi Activity chuyển sang trạng thái Resumed
-        Log.i("WeatherActivity", "onResume called");
+        Log.i(TAG, "onResume() called");
     }
-
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
-        // Ghi log khi Activity chuyển sang trạng thái Paused
-        Log.i("WeatherActivity", "onPause called");
+        Log.i(TAG, "onPause() called");
     }
-
     @Override
-    protected void onStop() {
+    public void onStop() {
         super.onStop();
-        // Ghi log khi Activity chuyển sang trạng thái Stopped
-        Log.i("WeatherActivity", "onStop called");
+        Log.i(TAG, "onStop() called");
     }
-
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
-        // Ghi log khi Activity bị hủy
-        Log.i("WeatherActivity", "onDestroy called");
+        Log.i(TAG, "onDestroy() called");
     }
 }
