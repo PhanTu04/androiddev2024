@@ -15,7 +15,7 @@ import androidx.fragment.app.Fragment;
 public class ForecastFragment extends Fragment {
 
     public static ForecastFragment newInstance() {
-        return null;
+        return new ForecastFragment();
     }
 
     @Override
