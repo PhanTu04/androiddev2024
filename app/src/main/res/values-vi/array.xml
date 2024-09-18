@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="days_of_the_week">
-        <item>Mon</item>
-        <item>Tue</item>
-        <item>Wed</item>
-        <item>Thu</item>
-        <item>Fri</item>
-        <item>Sat</item>
-        <item>Sun</item>
+        <item>Thứ 2</item>
+        <item>Thứ 3</item>
+        <item>Thứ 4</item>
+        <item>Thứ 5</item>
+        <item>Thứ 6</item>
+        <item>Thứ 7</item>
+        <item>CN</item>
     </string-array>
     <string-array name="condition">
-        <item>Partly cloudy</item>
-        <item>Sunny</item>
-        <item>Rainy</item>
-        <item>Cloudy</item>
-        <item>Windy</item>
-        <item>Snowy</item>
-        <item>Stormy</item>
+        <item>Mây vài nơi</item>
+        <item>Trời nắng</item>
+        <item>Trời mưa</item>
+        <item>Nhiều mây</item>
+        <item>Gió mạnh</item>
+        <item>Có tuyết</item>
+        <item>Có bão</item>
     </string-array>
     <integer-array name="degrees">
         <item>25</item>
